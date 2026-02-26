@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { CATEGORIES, UNITS, WIRE_TABLE, PHYSICAL_CONSTANTS, STEAM_TABLE_DATA, API_526_ORIFICES, MATERIALS, PIPE_SCHEDULE_DATA, TUBING_DATA, FLANGE_DATA, TORQUE_DATA } from './constants';
+import { CATEGORIES, UNITS, WIRE_TABLE, PHYSICAL_CONSTANTS, STEAM_TABLE_DATA, API_526_ORIFICES, PIPE_SCHEDULE_DATA, TUBING_DATA, FLANGE_DATA, TORQUE_DATA } from './constants';
 import { Category, CalculationLog } from './types';
 import { askEngineeringAssistant } from './geminiService';
 
@@ -14,8 +14,6 @@ const App: React.FC = () => {
   
   // Module specific states
   const [steamPressureUnit, setSteamPressureUnit] = useState<string>('psi');
-  const [materialUnitSystem, setMaterialUnitSystem] = useState<'SI' | 'IMP'>('SI');
-  const [materialSearch, setMaterialSearch] = useState('');
   const [psvFlow, setPsvFlow] = useState<string>('50000');
   const [psvSetP, setPsvSetP] = useState<string>('100');
   const [psvTemp, setPsvTemp] = useState<string>('150');
@@ -411,31 +409,6 @@ const App: React.FC = () => {
                 </table>
               </div>
               <p className="text-[9px] text-slate-400 mt-2">* Calculations based on NEC/IEEE standards for 3% maximum voltage drop. Red rows indicate current exceeding wire safety rating.</p>
-            </div>
-          )}
-
-          {activeTab === 'Materials' && (
-            <div className="space-y-6 animate-in fade-in">
-              <div className="flex flex-col md:flex-row gap-4 justify-between">
-                <input type="text" placeholder="Search materials..." value={materialSearch} onChange={(e) => setMaterialSearch(e.target.value)} className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm flex-1" />
-                <div className="flex bg-slate-100 p-1 rounded-xl">
-                  <button onClick={() => setMaterialUnitSystem('SI')} className={`px-4 py-1 text-[10px] font-bold uppercase rounded-lg ${materialUnitSystem === 'SI' ? 'bg-white text-blue-700' : 'text-slate-500'}`}>SI</button>
-                  <button onClick={() => setMaterialUnitSystem('IMP')} className={`px-4 py-1 text-[10px] font-bold uppercase rounded-lg ${materialUnitSystem === 'IMP' ? 'bg-white text-blue-700' : 'text-slate-500'}`}>IMP</button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {MATERIALS.filter(m => m.name.toLowerCase().includes(materialSearch.toLowerCase())).map((m, i) => (
-                  <div key={i} className="p-4 border border-slate-100 rounded-2xl bg-slate-50/30 hover:bg-white hover:border-blue-200 transition-all shadow-sm">
-                    <h4 className="font-bold text-slate-800 mb-2">{m.name}</h4>
-                    <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-slate-500">
-                      <div>Density: {materialUnitSystem === 'SI' ? `${m.density.si} kg/m³` : `${m.density.imp} lb/ft³`}</div>
-                      <div>Expansion: {materialUnitSystem === 'SI' ? `${m.expansion.si} µm/m-C` : `${m.expansion.imp} µin/in-F`}</div>
-                      <div>Modulus: {materialUnitSystem === 'SI' ? `${m.modulus.si} GPa` : `${m.modulus.imp} Mpsi`}</div>
-                      <div className="font-bold text-blue-600">{m.category}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           )}
 

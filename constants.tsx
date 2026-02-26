@@ -15,23 +15,10 @@ export const CATEGORIES: { id: any; icon: string; label: string }[] = [
   { id: 'Torque', icon: 'fa-wrench', label: 'Bolt Torque' },
   { id: 'Electrical', icon: 'fa-bolt', label: 'Electrical' },
   { id: 'Tables', icon: 'fa-table', label: 'Wire Tables' },
-  { id: 'Materials', icon: 'fa-atom', label: 'Materials' },
   { id: 'Constants', icon: 'fa-book', label: 'Constants' },
   { id: 'Steam', icon: 'fa-cloud', label: 'Steam Table' },
   { id: 'PSV', icon: 'fa-shield-halved', label: 'API 520 PSV' },
   { id: 'AI', icon: 'fa-microchip', label: 'AI Assistant' },
-];
-
-export const MATERIALS: MaterialProperty[] = [
-  { name: 'Carbon Steel (A36)', category: 'Metal', density: { si: 7850, imp: 490 }, modulus: { si: 200, imp: 29 }, expansion: { si: 11.7, imp: 6.5 } },
-  { name: 'Stainless Steel (304)', category: 'Metal', density: { si: 8000, imp: 500 }, modulus: { si: 193, imp: 28 }, expansion: { si: 17.2, imp: 9.6 } },
-  { name: 'Stainless Steel (316)', category: 'Metal', density: { si: 8000, imp: 500 }, modulus: { si: 193, imp: 28 }, expansion: { si: 15.9, imp: 8.8 } },
-  { name: 'Aluminum (6061-T6)', category: 'Metal', density: { si: 2700, imp: 169 }, modulus: { si: 68.9, imp: 10 }, expansion: { si: 23.6, imp: 13.1 } },
-  { name: 'Copper (C110)', category: 'Metal', density: { si: 8960, imp: 559 }, modulus: { si: 117, imp: 17 }, expansion: { si: 16.6, imp: 9.2 } },
-  { name: 'Titanium (Grade 5)', category: 'Metal', density: { si: 4430, imp: 276 }, modulus: { si: 114, imp: 16.5 }, expansion: { si: 8.6, imp: 4.8 } },
-  { name: 'PVC (Rigid)', category: 'Plastic', density: { si: 1380, imp: 86 }, modulus: { si: 3.3, imp: 0.48 }, expansion: { si: 50.4, imp: 28 } },
-  { name: 'PTFE (Teflon)', category: 'Plastic', density: { si: 2200, imp: 137 }, modulus: { si: 0.5, imp: 0.07 }, expansion: { si: 120, imp: 67 } },
-  { name: 'HDPE', category: 'Plastic', density: { si: 950, imp: 59 }, modulus: { si: 0.8, imp: 0.12 }, expansion: { si: 120, imp: 67 } },
 ];
 
 export const UNITS: Record<string, Unit[]> = {
