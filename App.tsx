@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { CATEGORIES, UNITS, WIRE_TABLE, PHYSICAL_CONSTANTS, STEAM_TABLE_DATA, API_526_ORIFICES, MATERIALS, PIPE_SCHEDULE_DATA, TUBING_DATA } from './constants';
+import { CATEGORIES, UNITS, WIRE_TABLE, PHYSICAL_CONSTANTS, STEAM_TABLE_DATA, API_526_ORIFICES, MATERIALS, PIPE_SCHEDULE_DATA, TUBING_DATA, FLANGE_DATA, TORQUE_DATA } from './constants';
 import { Category, CalculationLog } from './types';
 import { askEngineeringAssistant } from './geminiService';
 
@@ -45,6 +45,14 @@ const App: React.FC = () => {
   const [selectedSch, setSelectedSch] = useState<string>('40');
   const [selectedTubingOD, setSelectedTubingOD] = useState<string>('1/2');
   const [selectedTubingWall, setSelectedTubingWall] = useState<string>('0.049');
+
+  // Flange states
+  const [selectedFlangeNPS, setSelectedFlangeNPS] = useState<string>('2');
+  const [selectedFlangeClass, setSelectedFlangeClass] = useState<number>(150);
+
+  // Torque states
+  const [selectedBoltSize, setSelectedBoltSize] = useState<string>('3/4');
+  const [selectedFrictionFactor, setSelectedFrictionFactor] = useState<string>('0.15');
 
   useEffect(() => {
     if (UNITS[activeTab]) {
@@ -193,12 +201,23 @@ const App: React.FC = () => {
     return entry || null;
   }, [selectedTubingOD, selectedTubingWall]);
 
+  const flangeResult = useMemo(() => {
+    return FLANGE_DATA.find(f => f.nps === selectedFlangeNPS && f.class === selectedFlangeClass) || null;
+  }, [selectedFlangeNPS, selectedFlangeClass]);
+
+  const torqueResult = useMemo(() => {
+    const entry = TORQUE_DATA.find(t => t.boltSize === selectedBoltSize);
+    return entry?.torques[selectedFrictionFactor] || 0;
+  }, [selectedBoltSize, selectedFrictionFactor]);
+
   return (
     <div className="h-full flex flex-col md:flex-row bg-slate-50 text-slate-900 overflow-hidden">
       <nav className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 p-5 flex flex-col h-auto md:h-full z-50 shrink-0">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-blue-100">B</div>
+            <div className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-rose-100">
+              <i className="fa-solid fa-bacon"></i>
+            </div>
             <h1 className="text-xl font-bold tracking-tight text-slate-800">BCN</h1>
           </div>
           <button onClick={handleShare} className="md:hidden p-2 text-slate-400 hover:text-blue-600 transition-colors">
@@ -245,13 +264,23 @@ const App: React.FC = () => {
             </div>
           </div>
         )}
-        <div className="mt-auto pt-6 border-t border-slate-100 text-[9px] text-slate-400 font-mono uppercase tracking-widest text-center">BCN SUITE v1.8.9</div>
+        <div className="mt-auto pt-6 border-t border-slate-100 text-[9px] text-slate-400 font-mono uppercase tracking-widest text-center flex items-center justify-center gap-2">
+          <i className="fa-solid fa-bacon text-rose-300"></i>
+          BCN SUITE v1.8.9
+        </div>
       </nav>
 
       <main className="flex-1 p-6 md:p-10 overflow-y-auto custom-scrollbar">
-        <header className="mb-8">
-          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">{CATEGORIES.find(c => c.id === activeTab)?.label}</h2>
-          <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">Engineering Module</p>
+        <header className="mb-8 flex justify-between items-start">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
+              {CATEGORIES.find(c => c.id === activeTab)?.label}
+            </h2>
+            <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">Engineering Module</p>
+          </div>
+          <div className="text-rose-200/50">
+            <i className="fa-solid fa-bacon fa-2x"></i>
+          </div>
         </header>
 
         <section className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-10 min-h-[400px]">
@@ -597,6 +626,110 @@ const App: React.FC = () => {
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {activeTab === 'Flanges' && (
+            <div className="space-y-10 animate-in fade-in">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">NPS Size</label>
+                      <select value={selectedFlangeNPS} onChange={e => setSelectedFlangeNPS(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                        {Array.from(new Set(FLANGE_DATA.map(f => f.nps))).map(nps => <option key={nps} value={nps}>{nps}" NPS</option>)}
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Pressure Class</label>
+                      <select value={selectedFlangeClass} onChange={e => setSelectedFlangeClass(Number(e.target.value))} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                        {Array.from(new Set(FLANGE_DATA.map(f => f.class))).sort((a, b) => a - b).map(cls => <option key={cls} value={cls}>Class {cls}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Stud Quantity</span>
+                      <span className="text-sm font-mono font-bold text-slate-700">{flangeResult?.studQty || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Stud Size</span>
+                      <span className="text-sm font-mono font-bold text-slate-700">{flangeResult?.studSize ? `${flangeResult.studSize}"` : 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Nut Size (Heavy Hex)</span>
+                      <span className="text-sm font-mono font-bold text-slate-700">{flangeResult?.nutSize ? `${flangeResult.nutSize}"` : 'N/A'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900 rounded-3xl p-8 text-white shadow-xl flex flex-col justify-center space-y-6">
+                  <div>
+                    <div className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-2">Bolting Summary</div>
+                    <div className="text-4xl font-bold text-blue-400">
+                      {flangeResult ? (
+                        <>
+                          {flangeResult.studQty} x {flangeResult.studSize}" <span className="text-xl font-light text-slate-400">Studs</span>
+                        </>
+                      ) : 'No Data Available'}
+                    </div>
+                  </div>
+                  <div className="pt-6 border-t border-slate-800">
+                    <div className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-2">Standards Reference</div>
+                    <div className="text-sm font-mono text-slate-500">ASME B16.5-2020 Pipe Flanges and Flanged Fittings</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'Torque' && (
+            <div className="space-y-10 animate-in fade-in">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Bolt Size (in)</label>
+                      <select value={selectedBoltSize} onChange={e => setSelectedBoltSize(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                        {TORQUE_DATA.map(t => <option key={t.boltSize} value={t.boltSize}>{t.boltSize}"</option>)}
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Friction Factor (μ)</label>
+                      <select value={selectedFrictionFactor} onChange={e => setSelectedFrictionFactor(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                        <option value="0.15">0.15 (Standard)</option>
+                        <option value="0.20">0.20 (Dry)</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Bolt Diameter</span>
+                      <span className="text-sm font-mono font-bold text-slate-700">{selectedBoltSize}"</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Friction Coefficient</span>
+                      <span className="text-sm font-mono font-bold text-slate-700">{selectedFrictionFactor}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-700 rounded-3xl p-8 text-white shadow-xl flex flex-col justify-center space-y-6">
+                  <div>
+                    <div className="text-[10px] uppercase font-bold text-blue-200 tracking-widest mb-2">Target Torque (50k psi Stress)</div>
+                    <div className="text-6xl font-bold">
+                      {torqueResult} <span className="text-2xl font-light text-blue-200">ft-lb</span>
+                    </div>
+                    <div className="mt-4 text-[10px] text-blue-200 font-mono uppercase">Metric: {(torqueResult * 1.35582).toFixed(1)} N·m</div>
+                  </div>
+                  <div className="pt-6 border-t border-blue-500">
+                    <div className="text-[10px] uppercase font-bold text-blue-200 tracking-widest mb-2">Standards Reference</div>
+                    <div className="text-sm font-mono text-blue-100">ASME PCC-1-2013 Table 1 Target Torque Index</div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

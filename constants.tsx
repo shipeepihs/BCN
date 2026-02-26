@@ -1,5 +1,5 @@
 
-import { Unit, WireTableEntry, PhysicalConstant, SteamTableEntry, MaterialProperty, PipeScheduleEntry, TubingEntry } from './types';
+import { Unit, WireTableEntry, PhysicalConstant, SteamTableEntry, MaterialProperty, PipeScheduleEntry, TubingEntry, FlangeEntry, TorqueEntry } from './types';
 
 export const CATEGORIES: { id: any; icon: string; label: string }[] = [
   { id: 'Pressure', icon: 'fa-gauge-high', label: 'Pressure' },
@@ -11,6 +11,8 @@ export const CATEGORIES: { id: any; icon: string; label: string }[] = [
   { id: 'IdealGas', icon: 'fa-wind', label: 'Ideal Gas Law' },
   { id: 'WireSize', icon: 'fa-lines-leaning', label: 'Wire Size' },
   { id: 'PipeSchedules', icon: 'fa-circle-dot', label: 'Pipe Schedules' },
+  { id: 'Flanges', icon: 'fa-dharmachakra', label: 'ANSI Flanges' },
+  { id: 'Torque', icon: 'fa-wrench', label: 'Bolt Torque' },
   { id: 'Electrical', icon: 'fa-bolt', label: 'Electrical' },
   { id: 'Tables', icon: 'fa-table', label: 'Wire Tables' },
   { id: 'Materials', icon: 'fa-atom', label: 'Materials' },
@@ -191,4 +193,62 @@ export const TUBING_DATA: TubingEntry[] = [
   { od: '1', wall: '0.065', id: 0.870 },
   { od: '1', wall: '0.083', id: 0.834 },
   { od: '1', wall: '0.109', id: 0.782 },
+];
+
+export const FLANGE_DATA: FlangeEntry[] = [
+  // Class 150
+  { nps: '1/2', class: 150, studSize: '1/2', studQty: 4, nutSize: '7/8' },
+  { nps: '3/4', class: 150, studSize: '1/2', studQty: 4, nutSize: '7/8' },
+  { nps: '1', class: 150, studSize: '1/2', studQty: 4, nutSize: '7/8' },
+  { nps: '1-1/4', class: 150, studSize: '1/2', studQty: 4, nutSize: '7/8' },
+  { nps: '1-1/2', class: 150, studSize: '1/2', studQty: 4, nutSize: '7/8' },
+  { nps: '2', class: 150, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '2-1/2', class: 150, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '3', class: 150, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '4', class: 150, studSize: '5/8', studQty: 8, nutSize: '1-1/16' },
+  { nps: '6', class: 150, studSize: '3/4', studQty: 8, nutSize: '1-1/4' },
+  { nps: '8', class: 150, studSize: '3/4', studQty: 8, nutSize: '1-1/4' },
+  { nps: '10', class: 150, studSize: '7/8', studQty: 12, nutSize: '1-7/16' },
+  { nps: '12', class: 150, studSize: '7/8', studQty: 12, nutSize: '1-7/16' },
+
+  // Class 300
+  { nps: '1/2', class: 300, studSize: '1/2', studQty: 4, nutSize: '7/8' },
+  { nps: '3/4', class: 300, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '1', class: 300, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '1-1/4', class: 300, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '1-1/2', class: 300, studSize: '3/4', studQty: 4, nutSize: '1-1/4' },
+  { nps: '2', class: 300, studSize: '5/8', studQty: 8, nutSize: '1-1/16' },
+  { nps: '2-1/2', class: 300, studSize: '3/4', studQty: 8, nutSize: '1-1/4' },
+  { nps: '3', class: 300, studSize: '3/4', studQty: 8, nutSize: '1-1/4' },
+  { nps: '4', class: 300, studSize: '3/4', studQty: 8, nutSize: '1-1/4' },
+  { nps: '6', class: 300, studSize: '3/4', studQty: 12, nutSize: '1-1/4' },
+  { nps: '8', class: 300, studSize: '7/8', studQty: 12, nutSize: '1-7/16' },
+  { nps: '10', class: 300, studSize: '1', studQty: 16, nutSize: '1-5/8' },
+  { nps: '12', class: 300, studSize: '1-1/8', studQty: 16, nutSize: '1-13/16' },
+
+  // Class 600
+  { nps: '1/2', class: 600, studSize: '1/2', studQty: 4, nutSize: '7/8' },
+  { nps: '3/4', class: 600, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '1', class: 600, studSize: '5/8', studQty: 4, nutSize: '1-1/16' },
+  { nps: '2', class: 600, studSize: '5/8', studQty: 8, nutSize: '1-1/16' },
+  { nps: '3', class: 600, studSize: '3/4', studQty: 8, nutSize: '1-1/4' },
+  { nps: '4', class: 600, studSize: '7/8', studQty: 8, nutSize: '1-7/16' },
+  { nps: '6', class: 600, studSize: '1', studQty: 12, nutSize: '1-5/8' },
+  { nps: '8', class: 600, studSize: '1-1/8', studQty: 12, nutSize: '1-13/16' },
+];
+
+export const TORQUE_DATA: TorqueEntry[] = [
+  { boltSize: '1/2', torques: { '0.15': 45, '0.20': 60 } },
+  { boltSize: '5/8', torques: { '0.15': 90, '0.20': 120 } },
+  { boltSize: '3/4', torques: { '0.15': 150, '0.20': 200 } },
+  { boltSize: '7/8', torques: { '0.15': 240, '0.20': 320 } },
+  { boltSize: '1', torques: { '0.15': 365, '0.20': 485 } },
+  { boltSize: '1-1/8', torques: { '0.15': 530, '0.20': 705 } },
+  { boltSize: '1-1/4', torques: { '0.15': 750, '0.20': 1000 } },
+  { boltSize: '1-3/8', torques: { '0.15': 1020, '0.20': 1360 } },
+  { boltSize: '1-1/2', torques: { '0.15': 1200, '0.20': 1600 } },
+  { boltSize: '1-5/8', torques: { '0.15': 1650, '0.20': 2200 } },
+  { boltSize: '1-3/4', torques: { '0.15': 2100, '0.20': 2800 } },
+  { boltSize: '1-7/8', torques: { '0.15': 2700, '0.20': 3600 } },
+  { boltSize: '2', torques: { '0.15': 3300, '0.20': 4400 } },
 ];

@@ -1,5 +1,20 @@
 
-export type Category = 'Pressure' | 'Temperature' | 'Flow' | 'Volume' | 'Weight' | 'Length' | 'IdealGas' | 'WireSize' | 'PipeSchedules' | 'Electrical' | 'Tables' | 'Constants' | 'Steam' | 'PSV' | 'Materials' | 'AI';
+export type Category = 'Pressure' | 'Temperature' | 'Flow' | 'Volume' | 'Weight' | 'Length' | 'IdealGas' | 'WireSize' | 'PipeSchedules' | 'Flanges' | 'Torque' | 'Electrical' | 'Tables' | 'Constants' | 'Steam' | 'PSV' | 'Materials' | 'AI';
+
+export interface TorqueEntry {
+  boltSize: string;
+  torques: {
+    [frictionFactor: string]: number; // ft-lb
+  };
+}
+
+export interface FlangeEntry {
+  nps: string;
+  class: number;
+  studSize: string;
+  studQty: number;
+  nutSize: string;
+}
 
 export interface PipeScheduleEntry {
   nps: string;
