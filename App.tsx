@@ -729,10 +729,10 @@ const App: React.FC = () => {
                       </select>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase">Friction Factor (μ)</label>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Bolt Condition (μ)</label>
                       <select value={selectedFrictionFactor} onChange={e => setSelectedFrictionFactor(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
-                        <option value="0.15">0.15 (Standard)</option>
-                        <option value="0.20">0.20 (Dry)</option>
+                        <option value="0.15">0.15 (Coated Bolts)</option>
+                        <option value="0.20">0.20 (Noncoated Bolts)</option>
                       </select>
                     </div>
                   </div>
@@ -751,7 +751,7 @@ const App: React.FC = () => {
 
                 <div className="bg-blue-700 rounded-3xl p-8 text-white shadow-xl flex flex-col justify-center space-y-6">
                   <div>
-                    <div className="text-[10px] uppercase font-bold text-blue-200 tracking-widest mb-2">Target Torque (50k psi Stress)</div>
+                    <div className="text-[10px] uppercase font-bold text-blue-200 tracking-widest mb-2">Target Torque (50 ksi Root Area)</div>
                     <div className="text-6xl font-bold">
                       {torqueResult} <span className="text-2xl font-light text-blue-200">ft-lb</span>
                     </div>
@@ -759,7 +759,7 @@ const App: React.FC = () => {
                   </div>
                   <div className="pt-6 border-t border-blue-500">
                     <div className="text-[10px] uppercase font-bold text-blue-200 tracking-widest mb-2">Standards Reference</div>
-                    <div className="text-sm font-mono text-blue-100">ASME PCC-1-2013 Table 1 Target Torque Index</div>
+                    <div className="text-sm font-mono text-blue-100 italic">ASME PCC-1 Table 1 (Target 50 ksi Bolt Stress)</div>
                   </div>
                 </div>
               </div>
