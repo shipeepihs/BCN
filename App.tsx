@@ -28,6 +28,8 @@ const App: React.FC = () => {
   const [aiQuery, setAiQuery] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [isBaconDark, setIsBaconDark] = useState(false);
+  const [flip, setFlip] = useState(false);
 
   // Ideal Gas Law states
   const [gasP, setGasP] = useState<string>('101325'); // Pa
@@ -210,21 +212,32 @@ const App: React.FC = () => {
     return entry?.torques[selectedFrictionFactor] || 0;
   }, [selectedBoltSize, selectedFrictionFactor]);
 
-  const playSizzle = () => {
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
-    audio.volume = 0.4;
-    audio.play().catch(() => {});
+  const handleBaconClick = () => {
+    setIsBaconDark(!isBaconDark);
+    setFlip(true);
+    setTimeout(() => setFlip(false), 600);
   };
 
   return (
     <div className="h-full flex flex-col md:flex-row bg-slate-50 text-slate-900 overflow-hidden">
+      <style>{`
+        @keyframes flip {
+          0% { transform: rotateY(0); }
+          100% { transform: rotateY(360deg); }
+        }
+        .animate-flip {
+          animation: flip 0.6s ease-in-out;
+        }
+      `}</style>
       <nav className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 p-5 flex flex-col h-auto md:h-full z-50 shrink-0">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <button 
-              onClick={playSizzle}
-              className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-rose-100 hover:scale-110 active:scale-95 transition-transform"
-              title="Sizzle!"
+              onClick={handleBaconClick}
+              className={`w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold shadow-lg transition-all duration-300 ${
+                isBaconDark ? 'bg-rose-900 shadow-rose-900/20' : 'bg-rose-600 shadow-rose-100'
+              } ${flip ? 'animate-flip' : 'hover:scale-110 active:scale-95'}`}
+              title="Flip!"
             >
               <i className="fa-solid fa-bacon"></i>
             </button>
@@ -275,8 +288,12 @@ const App: React.FC = () => {
           </div>
         )}
         <div className="mt-auto pt-6 border-t border-slate-100 text-[9px] text-slate-400 font-mono uppercase tracking-widest text-center flex items-center justify-center gap-2">
-          <button onClick={playSizzle} className="hover:scale-125 active:scale-90 transition-transform cursor-pointer" title="Sizzle!">
-            <i className="fa-solid fa-bacon text-rose-300"></i>
+          <button 
+            onClick={handleBaconClick} 
+            className={`transition-all duration-300 ${flip ? 'animate-flip' : 'hover:scale-125 active:scale-90'} cursor-pointer`} 
+            title="Flip!"
+          >
+            <i className={`fa-solid fa-bacon ${isBaconDark ? 'text-rose-900' : 'text-rose-300'}`}></i>
           </button>
           BCN SUITE v1.8.9
         </div>
@@ -291,9 +308,9 @@ const App: React.FC = () => {
             <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">Engineering Module</p>
           </div>
           <button 
-            onClick={playSizzle}
-            className="text-rose-200/50 hover:text-rose-400 hover:scale-110 active:scale-95 transition-all cursor-pointer"
-            title="Sizzle!"
+            onClick={handleBaconClick}
+            className={`transition-all duration-300 ${isBaconDark ? 'text-rose-900' : 'text-rose-200/50'} ${flip ? 'animate-flip' : 'hover:text-rose-400 hover:scale-110 active:scale-95'} cursor-pointer`}
+            title="Flip!"
           >
             <i className="fa-solid fa-bacon fa-2x"></i>
           </button>
