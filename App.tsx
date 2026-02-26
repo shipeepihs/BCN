@@ -210,14 +210,24 @@ const App: React.FC = () => {
     return entry?.torques[selectedFrictionFactor] || 0;
   }, [selectedBoltSize, selectedFrictionFactor]);
 
+  const playSizzle = () => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+    audio.volume = 0.4;
+    audio.play().catch(() => {});
+  };
+
   return (
     <div className="h-full flex flex-col md:flex-row bg-slate-50 text-slate-900 overflow-hidden">
       <nav className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 p-5 flex flex-col h-auto md:h-full z-50 shrink-0">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-rose-100">
+            <button 
+              onClick={playSizzle}
+              className="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-rose-100 hover:scale-110 active:scale-95 transition-transform"
+              title="Sizzle!"
+            >
               <i className="fa-solid fa-bacon"></i>
-            </div>
+            </button>
             <h1 className="text-xl font-bold tracking-tight text-slate-800">BCN</h1>
           </div>
           <button onClick={handleShare} className="md:hidden p-2 text-slate-400 hover:text-blue-600 transition-colors">
@@ -265,7 +275,9 @@ const App: React.FC = () => {
           </div>
         )}
         <div className="mt-auto pt-6 border-t border-slate-100 text-[9px] text-slate-400 font-mono uppercase tracking-widest text-center flex items-center justify-center gap-2">
-          <i className="fa-solid fa-bacon text-rose-300"></i>
+          <button onClick={playSizzle} className="hover:scale-125 active:scale-90 transition-transform cursor-pointer" title="Sizzle!">
+            <i className="fa-solid fa-bacon text-rose-300"></i>
+          </button>
           BCN SUITE v1.8.9
         </div>
       </nav>
@@ -278,9 +290,13 @@ const App: React.FC = () => {
             </h2>
             <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-bold">Engineering Module</p>
           </div>
-          <div className="text-rose-200/50">
+          <button 
+            onClick={playSizzle}
+            className="text-rose-200/50 hover:text-rose-400 hover:scale-110 active:scale-95 transition-all cursor-pointer"
+            title="Sizzle!"
+          >
             <i className="fa-solid fa-bacon fa-2x"></i>
-          </div>
+          </button>
         </header>
 
         <section className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-10 min-h-[400px]">
